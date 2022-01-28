@@ -10,6 +10,7 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
+import { Select } from "../ReactSelect";
 
 ChartJS.register(
   CategoryScale,
@@ -20,10 +21,14 @@ ChartJS.register(
   Legend
 );
 
-export function BarChart({ defaultData }) {
+export function BarChart({ defaultData, colors, arrayOptions }) {
   const [pokemons, setPokemons] = useState([]);
   const [chartDataState, setChartDataState] = useState();
   const [optionsState, setOptionsState] = useState();
+  const [atributoX, setAtributoX] = useState({ label: "Ataque", value: "Att" });
+  const [atributoY, setAtributoY] = useState({ label: "Defesa", value: "Def" });
+
+  // console.log(defaultData);
 
   useEffect(() => {
     const averageAll = defaultData.map((item) => {
@@ -39,7 +44,7 @@ export function BarChart({ defaultData }) {
       (a, b) => b.averageValue - a.averageValue
     );
 
-    setPokemons(sortedAll.slice(0, 7));
+    setPokemons(sortedAll.slice(0, 10));
   }, [defaultData]);
 
   useEffect(() => {
@@ -47,17 +52,26 @@ export function BarChart({ defaultData }) {
       labels: pokemons.map((pokemon) => pokemon.Name),
       datasets: [
         {
-          label: `Pokémons mais fortes - Média ataque / defesa`,
+          label: `Pokémons mais fortes - Média ${atributoX.label} / ${atributoY.label}`,
           data: pokemons.map((pokemon, index) => {
             return {
               ...pokemon,
-              valueX: Number(pokemon.Att),
-              valueY: Number(pokemon.Def),
+              valueX: Number(pokemon[atributoX.value]),
+              valueY: Number(pokemon[atributoY.value]),
               x: pokemon.averageValue,
               y: index,
             };
           }),
-          backgroundColor: "rgba(53, 162, 235, 0.5)",
+          backgroundColor: (context) => {
+            const pokemon = context?.raw;
+            if (pokemon !== undefined) {
+              const color = colors.find(
+                (e) => e.type === pokemon["Type 1"]
+              ).color;
+
+              return color;
+            }
+          },
         },
       ],
     };
@@ -79,8 +93,8 @@ export function BarChart({ defaultData }) {
             afterLabel: (context) => {
               const pokemon = context?.raw;
               return [
-                `$ataque: ${pokemon.valueX}`,
-                `$defesa: ${pokemon.valueY}`,
+                `${atributoX.label}: ${pokemon.valueX}`,
+                `${atributoY.label}: ${pokemon.valueY}`,
                 `Média: ${pokemon.x}`,
               ];
             },
@@ -91,12 +105,45 @@ export function BarChart({ defaultData }) {
     setOptionsState(options);
   }, [pokemons]);
 
-  console.log(pokemons);
+  useEffect(() => {
+    const averageAll = defaultData.map((item) => {
+      return {
+        ...item,
+        averageValue:
+          (Number(item[atributoX.value]) + Number(item[atributoY.value])) / 2,
+      };
+    });
+
+    const sortedAll = averageAll.sort(
+      (a, b) => b.averageValue - a.averageValue
+    );
+
+    setPokemons(sortedAll.slice(0, 10));
+  }, [atributoX, atributoY]);
 
   return (
     <Container>
       {pokemons.length !== 0 && (
         <Content>
+          <span>Top 10 pokemons mais poderosos</span>
+          <div className="select-container">
+            <div>
+              <p>Atributo X</p>
+              <Select
+                arrayOptions={arrayOptions}
+                defaultValue={atributoX}
+                changeValue={setAtributoX}
+              />
+            </div>
+            <div>
+              <p>Atributo Y</p>
+              <Select
+                arrayOptions={arrayOptions}
+                defaultValue={atributoY}
+                changeValue={setAtributoY}
+              />
+            </div>
+          </div>
           <Bar data={chartDataState} options={optionsState} />
         </Content>
       )}

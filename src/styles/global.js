@@ -8,7 +8,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    background: #f0f2f5;
+    background: #d9f2e6;
   }
 
   body, input, textarea, button {
