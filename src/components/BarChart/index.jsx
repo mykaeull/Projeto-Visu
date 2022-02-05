@@ -125,10 +125,10 @@ export function BarChart({ defaultData, colors, arrayOptions }) {
     <Container>
       {pokemons.length !== 0 && (
         <Content>
-          <span>Top 10 pokemons mais poderosos</span>
+          <span>Ranking dos 10 pokemons mais poderosos</span>
           <div className="select-container">
             <div>
-              <p>Atributo X</p>
+              <p>Status X</p>
               <Select
                 arrayOptions={arrayOptions}
                 defaultValue={atributoX}
@@ -136,7 +136,7 @@ export function BarChart({ defaultData, colors, arrayOptions }) {
               />
             </div>
             <div>
-              <p>Atributo Y</p>
+              <p>Status Y</p>
               <Select
                 arrayOptions={arrayOptions}
                 defaultValue={atributoY}

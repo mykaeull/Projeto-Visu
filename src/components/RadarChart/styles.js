@@ -26,6 +26,7 @@ export const Content = styled.div`
       justify-content: center;
       align-items: center;
       gap: 1rem;
+      margin-bottom: 1rem;
 
       div {
         width: 200px;

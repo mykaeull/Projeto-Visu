@@ -4,6 +4,8 @@ import * as d3 from "d3";
 import pokemonCSV from "./data/pokemons.csv";
 import { BarChart } from "./components/BarChart";
 import { RadarChart } from "./components/RadarChart";
+import { PieChart } from "./components/PieChart";
+import { DoughnutChart } from "./components/DoughnutChart";
 
 export function App() {
   const [defaultData, setDefaultData] = useState([]);
@@ -43,12 +45,12 @@ export function App() {
   ];
 
   const arrayStatus = [
-    { label: "Ataque", value: "Att" },
-    { label: "Defesa", value: "Def" },
-    { label: "HP", value: "HP" },
-    { label: "Ataque Especial", value: "Spa" },
-    { label: "Defesa Especial", value: "Spd" },
-    { label: "Velocidade", value: "Spe" },
+    { label: "Ataque", value: "Att", color: "#ff0000" },
+    { label: "Defesa", value: "Def", color: "#664400" },
+    { label: "HP", value: "HP", color: "#5cd65c" },
+    { label: "Ataque Especial", value: "Spa", color: "#0073e6" },
+    { label: "Defesa Especial", value: "Spd", color: "#737373" },
+    { label: "Velocidade", value: "Spe", color: "#94b8b8" },
   ];
 
   return (
@@ -59,6 +61,12 @@ export function App() {
         arrayOptions={arrayStatus}
       />
       <RadarChart defaultData={defaultData} colors={colorsByType} />
+      <DoughnutChart
+        defaultData={defaultData}
+        colors={colorsByType}
+        arrayOptions={arrayStatus}
+      />
+      <PieChart defaultData={defaultData} arrayStatus={arrayStatus} />
       <GlobalStyle />
     </>
   );

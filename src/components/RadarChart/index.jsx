@@ -108,7 +108,7 @@ export function RadarChart({ defaultData, colors }) {
         datasets: dataSet,
       };
 
-      console.log(chartData);
+      // console.log(chartData);
       setChartDataState(chartData);
     }
   }, [dataSet]);
@@ -117,10 +117,10 @@ export function RadarChart({ defaultData, colors }) {
     <Container>
       {chartDataState !== null && (
         <Content>
-          <span>Comparação de status entre pokemons</span>
+          <span>Comparação de status entre dois pokemons</span>
           <div className="select-container">
             <div>
-              <p>Atributo X</p>
+              <p>Pokemon 1</p>
               <Select
                 arrayOptions={arrayOptions}
                 defaultValue={selectedPokemon1}
@@ -128,7 +128,7 @@ export function RadarChart({ defaultData, colors }) {
               />
             </div>
             <div>
-              <p>Atributo Y</p>
+              <p>Pokemon 2</p>
               <Select
                 arrayOptions={arrayOptions}
                 defaultValue={selectedPokemon2}
